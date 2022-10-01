@@ -3,8 +3,10 @@ title: I just wanted to know their names
 layout: page
 ---
 
-<input id="photo" type="file">
+<label for="photo">Photo of BTS member</label>
+<input id="photo" type="file" accept="image/png, image/gif, image/jpeg">
 <div id="results"></div>
+<p>The model was trained with a meager 150 images per member, and it's error-rate is nearly 45%. This was made for fun in about an hour, don't take it too seriously :)</p>
 <script>
   async function loaded(reader) {
     const response = await fetch('https://hf.space/embed/shinmai/I-just-wanted-to-know-their-names/+/api/predict/', {
@@ -13,7 +15,8 @@ layout: page
     });
     const json = await response.json();
     const label = json['data'][0]['confidences'][0]['label'];
-    results.innerHTML = `<br/><img src="${reader.result}" width="300"> <p>${label}</p>`
+    console.log(json)
+    results.innerHTML = `<br/><img src="${reader.result}" width="300"> Guessed BTS member: <p>${label}</p>`
   }
   function read() {
     const reader = new FileReader();
