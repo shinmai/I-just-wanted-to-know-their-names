@@ -22,7 +22,7 @@ layout: page
     const sec_confidence = Math.round(json['data'][0]['confidences'][1]['confidence'] * 10000) / 100;
     let secondary = "";
     if(json['data'][0]['confidences'][0]['confidence']<0.925)
-      secondary = `<br /><small>(2nd guess was ${secondary_n} at ${sec_confidence}%</small>`
+      secondary = `<br /><small>(2nd guess was ${secondary_n} at ${sec_confidence}%)</small>`
     results.innerHTML = `<hr /><img src="${reader.result}" width="300"><br /> Guessed BTS member: <p>${label} (${confidence}%)${secondary}</p>`
   }
   function read() {
