@@ -5,7 +5,9 @@ layout: page
 
 <label for="photo">Photo of BTS member</label>
 <input id="photo" type="file" accept="image/png, image/gif, image/jpeg">
+<hr />
 <div id="results"></div>
+<hr />
 <p>The model was trained with a meager 150 images per member, and it's error-rate is nearly 45%. This was made for fun in about an hour, don't take it too seriously :)</p>
 <script>
   async function loaded(reader) {
@@ -15,8 +17,13 @@ layout: page
     });
     const json = await response.json();
     const label = json['data'][0]['confidences'][0]['label'];
-    console.log(json)
-    results.innerHTML = `<br/><img src="${reader.result}" width="300"> Guessed BTS member: <p>${label}</p>`
+    const confidence = Math.round(json['data'][0]['confidences'][0]['confidence'] * 10000) / 100;
+    const secondary = json['data'][0]['confidences'][1]['label'];
+    const sec_confidence = Math.round(json['data'][0]['confidences'][1]['confidence'] * 10000) / 100;
+    let secondary = "";
+    if(json['data'][0]['confidences'][0]['confidence']<0.925)
+      secondary = `<br /><small>(2nd guess was ${secondary} at ${sec_confidence}%</small>`
+    results.innerHTML = `<br /><img src="${reader.result}" width="300"><br /> Guessed BTS member: <p>${label} (${confidence}%)%{secondary}</p>`
   }
   function read() {
     const reader = new FileReader();
